@@ -1,40 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Next.js CSR Authentication Template
+
+A comprehensive template for building client-side rendered (CSR) Next.js applications with authentication, protected routes, and a simple API.
+
+## Features
+
+- **Complete Authentication System**
+  - Login and Registration
+  - Protected Routes
+  - Role-Based Access Control (Admin vs Regular Users)
+
+- **API Integration**
+  - Auth API (Login, Register)
+  - Products API (CRUD operations)
+  - Admin Dashboard
+
+- **Modular Architecture**
+  - Feature-based organization
+  - Clean separation of concerns
+  - Reusable components and hooks
+
+- **Client-Side Rendering**
+  - Tailwind CSS for styling
+  - Responsive design
+  - Optimized for performance
+
+## Project Structure
+
+The project follows a feature-based structure:
+
+```
+src/
+├── components/        # Shared UI components
+├── context/           # Global context providers
+├── features/          # Feature modules
+│   ├── auth/          # Authentication feature
+│   ├── products/      # Products feature
+│   └── admin/         # Admin dashboard feature
+├── lib/               # Utility libraries
+├── pages/             # Next.js pages and API routes
+└── utils/             # Utility functions
+```
 
 ## Getting Started
 
-First, run the development server:
+1. Clone this repository
+2. Install dependencies: `npm install`
+3. Run the development server: `npm run dev`
+4. Open [http://localhost:3000](http://localhost:3000)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Authentication
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The template uses a simple token-based authentication system with localStorage for persistence. In a production environment, you should implement proper JWT handling, HTTP-only cookies, and more secure authentication practices.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### Default Admin Account
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+- Email: admin@example.com
+- Password: adminpassword
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+## API Routes
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `/api/auth/login`: POST - Authenticate user
+- `/api/auth/register`: POST - Register new user
+- `/api/products`: GET (public), POST (admin)
+- `/api/products/[id]`: GET (public), PUT/DELETE (admin)
 
-## Learn More
+## Customization
 
-To learn more about Next.js, take a look at the following resources:
+This template is designed to be a starting point. You can:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+- Replace the simple JSON database with MongoDB, PostgreSQL, etc.
+- Enhance security with proper JWT implementation
+- Add more features or expand existing ones
+- Customize the UI to match your brand
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+MIT
