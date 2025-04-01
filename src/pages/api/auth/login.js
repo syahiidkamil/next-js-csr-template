@@ -11,7 +11,10 @@ const readDB = () => {
 export default function handler(req, res) {
   // Only allow POST method
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
+    return res.status(405).json({ 
+      success: false, 
+      message: 'Method not allowed' 
+    });
   }
 
   try {
@@ -19,7 +22,10 @@ export default function handler(req, res) {
 
     // Basic validation
     if (!email || !password) {
-      return res.status(400).json({ message: 'Email and password are required' });
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Email and password are required' 
+      });
     }
 
     // Read database
@@ -32,7 +38,10 @@ export default function handler(req, res) {
 
     // Check if user exists and password matches
     if (!user || user.password !== password) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(401).json({ 
+        success: false, 
+        message: 'Invalid email or password' 
+      });
     }
 
     // Create a sanitized user object (without password)
@@ -49,12 +58,16 @@ export default function handler(req, res) {
 
     // Return user data and token
     res.status(200).json({
+      success: true,
       user: sanitizedUser,
       token,
       message: 'Login successful',
     });
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ 
+      success: false, 
+      message: 'Internal server error' 
+    });
   }
 }

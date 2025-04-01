@@ -17,7 +17,10 @@ const writeDB = (data) => {
 export default function handler(req, res) {
   // Only allow POST method
   if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
+    return res.status(405).json({ 
+      success: false, 
+      message: 'Method not allowed' 
+    });
   }
 
   try {
@@ -25,7 +28,10 @@ export default function handler(req, res) {
 
     // Basic validation
     if (!name || !email || !password) {
-      return res.status(400).json({ message: 'Name, email, and password are required' });
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Name, email, and password are required' 
+      });
     }
 
     // Read database
@@ -37,7 +43,10 @@ export default function handler(req, res) {
     );
 
     if (userExists) {
-      return res.status(409).json({ message: 'User with this email already exists' });
+      return res.status(409).json({ 
+        success: false, 
+        message: 'User with this email already exists' 
+      });
     }
 
     // Create new user
@@ -46,7 +55,8 @@ export default function handler(req, res) {
       name,
       email,
       password, // In a real app, you should hash this password
-      role: 'customer', // Default role for new users
+      role: 'user', // Default role for new users
+      active: true,
       createdAt: new Date().toISOString(),
     };
 
@@ -68,12 +78,16 @@ export default function handler(req, res) {
 
     // Return user data and token
     res.status(201).json({
+      success: true,
       user: sanitizedUser,
       token,
       message: 'Registration successful',
     });
   } catch (error) {
     console.error('Registration error:', error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ 
+      success: false, 
+      message: 'Internal server error' 
+    });
   }
 }

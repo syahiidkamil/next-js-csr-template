@@ -30,14 +30,22 @@ The project follows a feature-based structure:
 
 ```
 src/
-├── components/            # Shared UI components
-├── contexts/              # Global context providers
-├── lib/                   # Utility libraries
+├── features/              # Feature-based modules
+│   ├── auth/              # Authentication feature
+│   ├── dashboard/         # Dashboard feature
+│   ├── profile/           # Profile feature
+│   └── admin/             # Admin features
+├── shared/                # Shared code across features
+│   ├── components/        # Shared UI components
+│   ├── hooks/             # Shared custom hooks
+│   ├── lib/               # Utility libraries
+│   ├── routes/            # Route definitions and guards
+│   ├── services/          # Shared services
+│   └── utils/             # Utility functions
 ├── pages/
 │   ├── api/               # Next.js API routes 
-│   ├── client/            # Client-side rendered pages
 │   └── index.js           # Entry point for SPA
-├── utils/                 # Utility functions
+├── styles/                # Global styles
 └── App.jsx                # Main SPA component
 ```
 
@@ -45,8 +53,17 @@ src/
 
 1. Clone this repository
 2. Install dependencies: `npm install`
-3. Run the development server: `npm run dev`
-4. Open [http://localhost:3000](http://localhost:3000)
+3. Seed the database: `npm run seed`
+4. Run the development server: `npm run dev`
+5. Open [http://localhost:3000](http://localhost:3000)
+
+## Database Seeding
+
+The template includes a simple JSON database stored in `data/db.json`. To reset the database to its initial state with the default admin user, run:
+
+```bash
+npm run seed
+```
 
 ## Authentication
 
@@ -54,8 +71,8 @@ The template uses a simple token-based authentication system with localStorage f
 
 ### Default Admin Account
 
-- Email: admin@example.com
-- Password: adminpassword
+- **Email:** admin@example.com
+- **Password:** adminpassword
 
 ## API Routes
 
@@ -68,15 +85,12 @@ The template uses a simple token-based authentication system with localStorage f
 
 The template uses React Router v7 for client-side routing:
 
-- `/`: Home page
-- `/products`: Products listing
-- `/products/:id`: Product details
-- `/login`: Login page
-- `/register`: Registration page
-- `/admin`: Admin dashboard
-- `/admin/products`: Admin products management
-- `/admin/products/new`: Add new product
-- `/admin/products/:id`: Edit product
+- `/`: Dashboard home (protected)
+- `/profile`: User profile (protected)
+- `/login`: Login page (public)
+- `/register`: Registration page (public)
+- `/admin/users`: User management (admin only)
+- `/admin/invitation-codes`: Invitation codes (admin only)
 
 ## Customization
 
