@@ -108,7 +108,7 @@ const authService = {
     if (typeof window === 'undefined') {
       return null;
     }
-    return localStorage.setItem("token");
+    return localStorage.getItem("token");
   },
   
   updateProfile: async (userData) => {
