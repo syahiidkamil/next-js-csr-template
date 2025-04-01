@@ -1,8 +1,13 @@
 # Next.js CSR Authentication Template
 
-A comprehensive template for building client-side rendered (CSR) Next.js applications with authentication, protected routes, and a simple API.
+A comprehensive template for building client-side rendered (CSR) Next.js applications with React Router v7, authentication, protected routes, and a simple API.
 
 ## Features
+
+- **Client-Side Rendering (CSR)**
+  - Single Page Application (SPA) architecture
+  - React Router v7 for client-side routing
+  - Next.js for API routes and server-side functionality
 
 - **Complete Authentication System**
   - Login and Registration
@@ -19,26 +24,21 @@ A comprehensive template for building client-side rendered (CSR) Next.js applica
   - Clean separation of concerns
   - Reusable components and hooks
 
-- **Client-Side Rendering**
-  - Tailwind CSS for styling
-  - Responsive design
-  - Optimized for performance
-
 ## Project Structure
 
 The project follows a feature-based structure:
 
 ```
 src/
-├── components/        # Shared UI components
-├── context/           # Global context providers
-├── features/          # Feature modules
-│   ├── auth/          # Authentication feature
-│   ├── products/      # Products feature
-│   └── admin/         # Admin dashboard feature
-├── lib/               # Utility libraries
-├── pages/             # Next.js pages and API routes
-└── utils/             # Utility functions
+├── components/            # Shared UI components
+├── contexts/              # Global context providers
+├── lib/                   # Utility libraries
+├── pages/
+│   ├── api/               # Next.js API routes 
+│   ├── client/            # Client-side rendered pages
+│   └── index.js           # Entry point for SPA
+├── utils/                 # Utility functions
+└── App.jsx                # Main SPA component
 ```
 
 ## Getting Started
@@ -63,6 +63,20 @@ The template uses a simple token-based authentication system with localStorage f
 - `/api/auth/register`: POST - Register new user
 - `/api/products`: GET (public), POST (admin)
 - `/api/products/[id]`: GET (public), PUT/DELETE (admin)
+
+## Client-Side Routing
+
+The template uses React Router v7 for client-side routing:
+
+- `/`: Home page
+- `/products`: Products listing
+- `/products/:id`: Product details
+- `/login`: Login page
+- `/register`: Registration page
+- `/admin`: Admin dashboard
+- `/admin/products`: Admin products management
+- `/admin/products/new`: Add new product
+- `/admin/products/:id`: Edit product
 
 ## Customization
 

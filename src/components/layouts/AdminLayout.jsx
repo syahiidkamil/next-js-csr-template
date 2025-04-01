@@ -1,17 +1,15 @@
-import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useAuth } from "@/contexts/AuthContext";
+import React, { useState } from "react";
+import { Link, useLocation, Outlet, useNavigate } from "react-router";
+import { useAuth } from "../../contexts/AuthContext";
 
 /**
  * Admin layout component with sidebar navigation
- * @param {Object} props - Component props
- * @param {React.ReactNode} props.children - Child components
  */
-const AdminLayout = ({ children }) => {
+const AdminLayout = () => {
   const { user, logout } = useAuth();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const router = useRouter();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -19,7 +17,7 @@ const AdminLayout = ({ children }) => {
 
   const handleLogout = () => {
     logout();
-    router.push("/login");
+    navigate("/login");
   };
 
   return (
@@ -50,7 +48,7 @@ const AdminLayout = ({ children }) => {
               </button>
 
               <Link
-                href="/admin"
+                to="/admin"
                 className="ml-2 flex-shrink-0 text-xl font-bold"
               >
                 Admin Dashboard
@@ -82,9 +80,9 @@ const AdminLayout = ({ children }) => {
               <ul className="space-y-2">
                 <li>
                   <Link
-                    href="/admin"
+                    to="/admin"
                     className={`block px-4 py-2 rounded-md ${
-                      router.pathname === "/admin"
+                      location.pathname === "/admin"
                         ? "bg-gray-900 text-white"
                         : "text-gray-300 hover:bg-gray-700 hover:text-white"
                     }`}
@@ -94,9 +92,9 @@ const AdminLayout = ({ children }) => {
                 </li>
                 <li>
                   <Link
-                    href="/admin/products"
+                    to="/admin/products"
                     className={`block px-4 py-2 rounded-md ${
-                      router.pathname.includes("/admin/products")
+                      location.pathname.includes("/admin/products")
                         ? "bg-gray-900 text-white"
                         : "text-gray-300 hover:bg-gray-700 hover:text-white"
                     }`}
@@ -106,7 +104,7 @@ const AdminLayout = ({ children }) => {
                 </li>
                 <li>
                   <Link
-                    href="/"
+                    to="/"
                     className="block px-4 py-2 rounded-md text-gray-300 hover:bg-gray-700 hover:text-white"
                   >
                     Back to Website
@@ -119,7 +117,7 @@ const AdminLayout = ({ children }) => {
 
         {/* Main content */}
         <main className={`flex-grow p-6 ${isSidebarOpen ? "ml-64" : "ml-0"}`}>
-          {children}
+          <Outlet />
         </main>
       </div>
     </div>

@@ -31,9 +31,10 @@ axiosInstance.interceptors.response.use(
   (error) => {
     // Handle authentication errors
     if (error.response && error.response.status === 401) {
-      // Clear localStorage and redirect to login if not already there
+      // Clear localStorage
       if (typeof window !== 'undefined') {
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
         
         // Don't redirect if already on login page
         if (!window.location.pathname.includes('/login')) {

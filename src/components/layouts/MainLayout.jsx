@@ -1,17 +1,14 @@
-import { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useAuth } from "@/contexts/AuthContext";
+import React, { useState } from "react";
+import { Link, useLocation, Outlet } from "react-router";
+import { useAuth } from "../../contexts/AuthContext";
 
 /**
  * Main layout component for public pages
- * @param {Object} props - Component props
- * @param {React.ReactNode} props.children - Child components
  */
-const MainLayout = ({ children }) => {
+const MainLayout = () => {
   const { isAuthenticated, isAdmin, user, logout } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const router = useRouter();
+  const location = useLocation();
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -19,7 +16,6 @@ const MainLayout = ({ children }) => {
 
   const handleLogout = () => {
     logout();
-    router.push("/login");
   };
 
   return (
@@ -28,16 +24,16 @@ const MainLayout = ({ children }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
-              <Link href="/" className="flex-shrink-0 text-xl font-bold">
+              <Link to="/" className="flex-shrink-0 text-xl font-bold">
                 NextJS CSR
               </Link>
 
               <div className="hidden md:block">
                 <div className="ml-10 flex items-baseline space-x-4">
                   <Link
-                    href="/"
+                    to="/"
                     className={`px-3 py-2 rounded-md text-sm font-medium ${
-                      router.pathname === "/"
+                      location.pathname === "/"
                         ? "bg-gray-900 text-white"
                         : "text-gray-300 hover:bg-gray-700 hover:text-white"
                     }`}
@@ -45,11 +41,22 @@ const MainLayout = ({ children }) => {
                     Home
                   </Link>
 
+                  <Link
+                    to="/products"
+                    className={`px-3 py-2 rounded-md text-sm font-medium ${
+                      location.pathname.startsWith("/products")
+                        ? "bg-gray-900 text-white"
+                        : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                    }`}
+                  >
+                    Products
+                  </Link>
+
                   {isAdmin && (
                     <Link
-                      href="/admin"
+                      to="/admin"
                       className={`px-3 py-2 rounded-md text-sm font-medium ${
-                        router.pathname.startsWith("/admin")
+                        location.pathname.startsWith("/admin")
                           ? "bg-gray-900 text-white"
                           : "text-gray-300 hover:bg-gray-700 hover:text-white"
                       }`}
@@ -78,9 +85,9 @@ const MainLayout = ({ children }) => {
                 ) : (
                   <div className="flex space-x-4">
                     <Link
-                      href="/login"
+                      to="/login"
                       className={`px-3 py-2 rounded-md text-sm font-medium ${
-                        router.pathname === "/login"
+                        location.pathname === "/login"
                           ? "bg-gray-900 text-white"
                           : "text-gray-300 hover:bg-gray-700 hover:text-white"
                       }`}
@@ -88,9 +95,9 @@ const MainLayout = ({ children }) => {
                       Login
                     </Link>
                     <Link
-                      href="/register"
+                      to="/register"
                       className={`px-3 py-2 rounded-md text-sm font-medium ${
-                        router.pathname === "/register"
+                        location.pathname === "/register"
                           ? "bg-gray-900 text-white"
                           : "text-gray-300 hover:bg-gray-700 hover:text-white"
                       }`}
@@ -151,24 +158,38 @@ const MainLayout = ({ children }) => {
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
               <Link
-                href="/"
+                to="/"
                 className={`block px-3 py-2 rounded-md text-base font-medium ${
-                  router.pathname === "/"
+                  location.pathname === "/"
                     ? "bg-gray-900 text-white"
                     : "text-gray-300 hover:bg-gray-700 hover:text-white"
                 }`}
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 Home
               </Link>
 
+              <Link
+                to="/products"
+                className={`block px-3 py-2 rounded-md text-base font-medium ${
+                  location.pathname.startsWith("/products")
+                    ? "bg-gray-900 text-white"
+                    : "text-gray-300 hover:bg-gray-700 hover:text-white"
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Products
+              </Link>
+
               {isAdmin && (
                 <Link
-                  href="/admin"
+                  to="/admin"
                   className={`block px-3 py-2 rounded-md text-base font-medium ${
-                    router.pathname.startsWith("/admin")
+                    location.pathname.startsWith("/admin")
                       ? "bg-gray-900 text-white"
                       : "text-gray-300 hover:bg-gray-700 hover:text-white"
                   }`}
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Admin
                 </Link>
@@ -181,7 +202,10 @@ const MainLayout = ({ children }) => {
                     Welcome, {user?.name}
                   </div>
                   <button
-                    onClick={handleLogout}
+                    onClick={() => {
+                      handleLogout();
+                      setIsMobileMenuOpen(false);
+                    }}
                     className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                   >
                     Logout
@@ -190,22 +214,24 @@ const MainLayout = ({ children }) => {
               ) : (
                 <div className="px-2 space-y-1">
                   <Link
-                    href="/login"
+                    to="/login"
                     className={`block px-3 py-2 rounded-md text-base font-medium ${
-                      router.pathname === "/login"
+                      location.pathname === "/login"
                         ? "bg-gray-900 text-white"
                         : "text-gray-300 hover:bg-gray-700 hover:text-white"
                     }`}
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Login
                   </Link>
                   <Link
-                    href="/register"
+                    to="/register"
                     className={`block px-3 py-2 rounded-md text-base font-medium ${
-                      router.pathname === "/register"
+                      location.pathname === "/register"
                         ? "bg-gray-900 text-white"
                         : "text-gray-300 hover:bg-gray-700 hover:text-white"
                     }`}
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Register
                   </Link>
@@ -216,7 +242,9 @@ const MainLayout = ({ children }) => {
         )}
       </nav>
 
-      <main className="flex-grow">{children}</main>
+      <main className="flex-grow">
+        <Outlet />
+      </main>
 
       <footer className="bg-gray-800 text-white py-6">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
