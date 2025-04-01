@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // Initial database state
 const initialData = {
@@ -9,10 +9,10 @@ const initialData = {
       name: "Admin User",
       email: "admin@example.com",
       password: "adminpassword", // In a real app, this would be hashed
-      role: "admin",
+      role: "ADMIN",
       active: true,
-      createdAt: new Date().toISOString()
-    }
+      createdAt: new Date().toISOString(),
+    },
   ],
   products: [
     {
@@ -22,21 +22,21 @@ const initialData = {
       price: 19.99,
       imageUrl: "https://via.placeholder.com/300",
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    }
-  ]
+      updatedAt: new Date().toISOString(),
+    },
+  ],
 };
 
 // Path to the database file
-const dbPath = path.join(__dirname, '../data/db.json');
+const dbPath = path.join(__dirname, "../data/db.json");
 
 // Write the initial data to the database file
 try {
-  fs.writeFileSync(dbPath, JSON.stringify(initialData, null, 2), 'utf8');
-  console.log('✅ Database seeded successfully!');
-  console.log('👤 Admin User:');
-  console.log('   Email: admin@example.com');
-  console.log('   Password: adminpassword');
+  fs.writeFileSync(dbPath, JSON.stringify(initialData, null, 2), "utf8");
+  console.log("✅ Database seeded successfully!");
+  console.log("👤 Admin User:");
+  console.log("   Email: admin@example.com");
+  console.log("   Password: adminpassword");
 } catch (error) {
-  console.error('❌ Error seeding database:', error);
+  console.error("❌ Error seeding database:", error);
 }
