@@ -1,105 +1,144 @@
-# Next.js CSR Authentication Template
+# Next.js SPA with Fastify Backend
 
-A comprehensive template for building client-side rendered (CSR) Next.js applications with React Router v7, authentication, protected routes, and a simple API.
+A comprehensive template for building client-side rendered (CSR) Next.js applications with React Router, a Fastify backend API, and a PostgreSQL database, all in a single codebase that can be deployed to Vercel or other hosting platforms.
 
 ## Features
 
-- **Client-Side Rendering (CSR)**
-  - Single Page Application (SPA) architecture
-  - React Router v7 for client-side routing
-  - Next.js for API routes and server-side functionality
+- **Single Page Application (SPA) Frontend**
+  - React Router for client-side routing
+  - Tailwind CSS for styling
+  - Complete authentication flow
 
-- **Complete Authentication System**
-  - Login and Registration
-  - Protected Routes
-  - Role-Based Access Control (Admin vs Regular Users)
+- **Fastify Backend API**
+  - Feature-based architecture for maintainability
+  - JWT authentication
+  - PostgreSQL database integration via Prisma ORM
+  - Type-safe database access
 
-- **API Integration**
-  - Auth API (Login, Register)
-  - Products API (CRUD operations)
-  - Admin Dashboard
-
-- **Modular Architecture**
-  - Feature-based organization
+- **Architecture Highlights**
+  - KISS and YAGNI principles applied throughout
+  - Single responsibility for each module
+  - Feature-based organization for both frontend and backend
   - Clean separation of concerns
-  - Reusable components and hooks
+  - Modular and maintainable codebase
 
 ## Project Structure
 
-The project follows a feature-based structure:
-
 ```
 src/
-├── features/              # Feature-based modules
-│   ├── auth/              # Authentication feature
-│   ├── dashboard/         # Dashboard feature
-│   ├── profile/           # Profile feature
-│   └── admin/             # Admin features
-├── shared/                # Shared code across features
-│   ├── components/        # Shared UI components
-│   ├── hooks/             # Shared custom hooks
-│   ├── lib/               # Utility libraries
-│   ├── routes/            # Route definitions and guards
-│   ├── services/          # Shared services
-│   └── utils/             # Utility functions
-├── pages/
-│   ├── api/               # Next.js API routes 
-│   └── index.js           # Entry point for SPA
-├── styles/                # Global styles
-└── App.jsx                # Main SPA component
+├── features/                # Frontend features
+│   ├── auth/                # Authentication UI components
+│   ├── dashboard/           # Dashboard components
+│   └── profile/             # Profile components
+├── server/                  # Backend code (Fastify)
+│   ├── features/            # Backend features
+│   │   └── auth/            # Auth routes and controllers
+│   ├── shared/              # Shared server code
+│   │   ├── config/          # Configuration
+│   │   ├── db/              # Database utilities
+│   │   └── middlewares/     # Shared middlewares
+│   └── index.js             # Server entry point
+├── shared/                  # Shared frontend code
+│   ├── components/          # Reusable UI components
+│   ├── lib/                 # Utility libraries
+│   └── routes/              # Route definitions
+├── pages/                   # Next.js pages
+│   ├── api/                 # API route for proxying to Fastify
+│   │   └── [[...all]].js    # Catch-all API route
+│   └── index.js             # Main page (SPA entry)
+└── App.jsx                  # Main React component
 ```
 
 ## Getting Started
 
 1. Clone this repository
-2. Install dependencies: `npm install`
-3. Seed the database: `npm run seed`
-4. Run the development server: `npm run dev`
-5. Open [http://localhost:3000](http://localhost:3000)
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Create a `.env.local` file with your environment variables:
+   ```
+   # Copy from .env.example and update with your values
+   cp .env.example .env.local
+   ```
+4. Initialize the database:
+   ```bash
+   npm run db:init
+   ```
+5. Run the development server:
+   ```bash
+   npm run dev
+   ```
+6. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-## Database Seeding
+## Database Setup
 
-The template includes a simple JSON database stored in `data/db.json`. To reset the database to its initial state with the default admin user, run:
+This template uses PostgreSQL with Prisma ORM. To set up:
 
-```bash
-npm run seed
-```
+1. Copy `.env.local.example` to `.env.local` and update the `DATABASE_URL` with your PostgreSQL connection string:
+   ```bash
+   cp .env.local.example .env.local
+   # Then edit .env.local with your database credentials
+   ```
 
-## Authentication
+2. Run Prisma migrations to set up your database schema:
+   ```bash
+   npm run db:migrate
+   ```
 
-The template uses a simple token-based authentication system with localStorage for persistence. In a production environment, you should implement proper JWT handling, HTTP-only cookies, and more secure authentication practices.
+3. Seed the database with initial data:
+   ```bash
+   npm run db:seed
+   ```
 
-### Default Admin Account
+4. (Optional) Launch Prisma Studio to browse and edit your data:
+   ```bash
+   npm run db:studio
+   ```
+
+### Default Admin User
 
 - **Email:** admin@example.com
 - **Password:** adminpassword
 
 ## API Routes
 
-- `/api/auth/login`: POST - Authenticate user
-- `/api/auth/register`: POST - Register new user
-- `/api/products`: GET (public), POST (admin)
-- `/api/products/[id]`: GET (public), PUT/DELETE (admin)
+- `POST /api/auth/login` - Authenticate user
+- `POST /api/auth/register` - Register new user
+- `GET /api/auth/me` - Get current user profile (authenticated)
+- `PATCH /api/auth/me` - Update user profile (authenticated)
 
-## Client-Side Routing
+## Deployment
 
-The template uses React Router v7 for client-side routing:
+### Vercel Deployment
 
-- `/`: Dashboard home (protected)
-- `/profile`: User profile (protected)
-- `/login`: Login page (public)
-- `/register`: Registration page (public)
-- `/admin/users`: User management (admin only)
-- `/admin/invitation-codes`: Invitation codes (admin only)
+This template is designed to work seamlessly with Vercel:
 
-## Customization
+1. Connect your GitHub repository to Vercel
+2. Add environment variables in Vercel project settings
+3. Deploy!
 
-This template is designed to be a starting point. You can:
+### Database Considerations
 
-- Replace the simple JSON database with MongoDB, PostgreSQL, etc.
-- Enhance security with proper JWT implementation
-- Add more features or expand existing ones
-- Customize the UI to match your brand
+For production, use a managed PostgreSQL service like:
+- Neon
+- Supabase
+- Railway
+- AWS RDS
+
+## Adding New Features
+
+### Backend
+
+1. Create a new directory in `src/server/features/`
+2. Add routes and controllers
+3. Register routes in `src/server/index.js`
+
+### Frontend
+
+1. Create components in `src/features/`
+2. Add routes in `src/App.jsx`
+3. Create services for API communication
 
 ## License
 
